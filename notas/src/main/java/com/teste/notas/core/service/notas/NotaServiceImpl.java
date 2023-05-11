@@ -1,9 +1,9 @@
 package com.teste.notas.core.service.notas;
 
-import com.teste.notas.core.domain.agreggates.notas.NotaAgreggate;
-import com.teste.notas.core.domain.entity.notas.Nota;
+import com.teste.notas.core.domain.agreggates.notas.Nota;
 import com.teste.notas.core.domain.shared.helpers.ObjectMapperJson;
 import com.teste.notas.infrasctruture.messaging.producers.notas.NotaProducer;
+import com.teste.notas.infrasctruture.messaging.producers.notas.NotaRequestFactory;
 import com.teste.notas.infrasctruture.persistence.notas.respository.NotaRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 public class NotaServiceImpl implements NotaService {
 
-    private NotaRepository notaRepository;
-    private NotaProducer notaProducer;
+    private final NotaRepository notaRepository;
+    private final NotaProducer notaProducer;
     public NotaServiceImpl(NotaRepository notaRepository,NotaProducer notaProducer) {
         this.notaRepository = notaRepository;
         this.notaProducer = notaProducer;
@@ -21,18 +21,19 @@ public class NotaServiceImpl implements NotaService {
 
     @Override
     public void create(String name, String description, double value) {
-        NotaAgreggate notaAgreggate = new NotaAgreggate();
-        var nota = notaAgreggate.create(name,description,value);
 
-        notaRepository.save(nota);
-        sendMessage(nota);
+        var nota = Nota.create(name,description,value);
+
+        var notaCreate = notaRepository.save(nota);
+        sendMessage(notaCreate);
 
     }
     private void sendMessage(Nota nota){
-        nota.setCreateNote(null);
+
+        var notaRequest = NotaRequestFactory.create(nota.getName(),nota.getDescription(),nota.getValue(),nota.getCreateNote());
 
 
-        String json = ObjectMapperJson.toStringJson(nota);
+        String json = ObjectMapperJson.toStringJson(notaRequest);
         notaProducer.send(json);
     }
     @Override

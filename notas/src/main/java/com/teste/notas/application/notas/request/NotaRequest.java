@@ -1,23 +1,17 @@
-package com.teste.notas.application.notas.dto;
+package com.teste.notas.application.notas.request;
 
-
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotaDto {
+public class NotaRequest {
     private  String name;
     private  String description;
     private  double value;
-    private String createNote;
-    private String closeNote;
 
 }

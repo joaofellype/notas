@@ -1,9 +1,7 @@
 package com.teste.notas.core.service.notas;
 
-import com.teste.notas.core.domain.entity.notas.Nota;
-import jakarta.persistence.Column;
+import com.teste.notas.core.domain.agreggates.notas.Nota;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotaService {

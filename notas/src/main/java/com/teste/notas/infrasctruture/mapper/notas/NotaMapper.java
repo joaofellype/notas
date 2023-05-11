@@ -1,7 +1,7 @@
 package com.teste.notas.infrasctruture.mapper.notas;
 
 import com.teste.notas.application.notas.dto.NotaDto;
-import com.teste.notas.core.domain.entity.notas.Nota;
+import com.teste.notas.core.domain.agreggates.notas.Nota;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
